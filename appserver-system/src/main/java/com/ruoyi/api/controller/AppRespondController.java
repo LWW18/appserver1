@@ -31,6 +31,7 @@ public class AppRespondController extends BaseController {
     @GetMapping(value = "/appAlarmCommandBackMsg")
     @ResponseBody
     public void appAlarmCommandBackMsg() throws IOException {
+        System.out.println("1234543212343");
         //打印日志及时间戳
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         logger.debug(" ==================== enter appAlarmCommandBackMsg ==================== ");
