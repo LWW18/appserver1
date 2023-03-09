@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LoraAppserverMapper">
+
+    <resultMap type="LoraAppserver" id="LoraAppserverResult">
+        <result property="id"    column="id"    />
+        <result property="appserverId"    column="appserver_id"    />
+        <result property="appserverName"    column="appserver_name"    />
+        <result property="appserverKey"    column="appserver_key"    />
+        <result property="authorizeTime"    column="authorize_time"    />
+        <result property="lastMsgDt"    column="last_msg_dt"    />
+    </resultMap>
+
+    <sql id="selectLoraAppserverVo">
+        select id, appserver_id, appserver_name, appserver_key, authorize_time, last_msg_dt from lora_appserver
+    </sql>
+
+    <select id="selectLoraAppserverList" parameterType="LoraAppserver" resultMap="LoraAppserverResult">
+        <include refid="selectLoraAppserverVo"/>
+        <where>
+            <if test="appserverId != null  and appserverId != ''"> and appserver_id like concat('%',#{appserverId},'%')</if>
+            <if test="appserverName != null  and appserverName != ''"> and appserver_name like concat('%', #{appserverName}, '%')</if>
+            <if test="appserverKey != null  and appserverKey != ''"> and appserver_key = #{appserverKey}</if>
+            <if test="authorizeTime != null "> and authorize_time = #{authorizeTime}</if>
+            <if test="lastMsgDt != null  and lastMsgDt != ''"> and last_msg_dt = #{lastMsgDt}</if>
+        </where>
+    </select>
+
+    <select id="selectLoraAppserverById" parameterType="Long" resultMap="LoraAppserverResult">
+        <include refid="selectLoraAppserverVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLoraAppserver" parameterType="LoraAppserver">
+        insert into lora_appserver
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="appserverId != null">appserver_id,</if>
+            <if test="appserverName != null">appserver_name,</if>
+            <if test="appserverKey != null">appserver_key,</if>
+            <if test="authorizeTime != null">authorize_time,</if>
+            <if test="lastMsgDt != null">last_msg_dt,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="appserverId != null">#{appserverId},</if>
+            <if test="appserverName != null">#{appserverName},</if>
+            <if test="appserverKey != null">#{appserverKey},</if>
+            <if test="authorizeTime != null">#{authorizeTime},</if>
+            <if test="lastMsgDt != null">#{lastMsgDt},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoraAppserver" parameterType="LoraAppserver">
+        update lora_appserver
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appserverId != null">appserver_id = #{appserverId},</if>
+            <if test="appserverName != null">appserver_name = #{appserverName},</if>
+            <if test="appserverKey != null">appserver_key = #{appserverKey},</if>
+            <if test="authorizeTime != null">authorize_time = #{authorizeTime},</if>
+            <if test="lastMsgDt != null">last_msg_dt = #{lastMsgDt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoraAppserverById" parameterType="Long">
+        delete from lora_appserver where id = #{id}
+    </delete>
+
+    <delete id="deleteLoraAppserverByIds" parameterType="String">
+        delete from lora_appserver where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

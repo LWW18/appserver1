@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.api.mapper.BsDataAskedFromAppMapper">
+    
+    <resultMap type="LoraData" id="LoraDataResult">
+        <result property="dataId"    column="data_id"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="sensorType"    column="sensor_type"    />
+        <result property="recvData"    column="recv_data"    />
+        <result property="recvAfterdata"    column="recv_afterdata"    />
+        <result property="recvTime"    column="recv_time"    />
+        <result property="appId"    column="app_id"    />
+    </resultMap>
+
+    <sql id="selectLoraDataVo">
+        select data_id, terminal_id, sensor_id, sensor_type, recv_data, recv_afterdata, recv_time, app_id from lora_data
+    </sql>
+
+    <select id="selectLoraDataList" parameterType="LoraData" resultMap="LoraDataResult">
+        <include refid="selectLoraDataVo"/>
+        <where>  
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="sensorId != null "> and sensor_id = #{sensorId}</if>
+            <if test="sensorType != null "> and sensor_type = #{sensorType}</if>
+            <if test="recvData != null  and recvData != ''"> and recv_data = #{recvData}</if>
+            <if test="recvAfterdata != null  and recvAfterdata != ''"> and recv_afterdata = #{recvAfterdata}</if>
+            <if test="recvTime != null "> and recv_time = #{recvTime}</if>
+            <if test="appId != null "> and app_id = #{appId}</if>
+        </where>
+    </select>
+    
+    <select id="selectLoraDataByDataId" parameterType="Long" resultMap="LoraDataResult">
+        <include refid="selectLoraDataVo"/>
+        where data_id = #{dataId}
+    </select>
+        
+    <insert id="insertLoraData" parameterType="LoraData" useGeneratedKeys="true" keyProperty="dataId">
+        insert into lora_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="sensorType != null">sensor_type,</if>
+            <if test="recvData != null">recv_data,</if>
+            <if test="recvAfterdata != null">recv_afterdata,</if>
+            <if test="recvTime != null">recv_time,</if>
+            <if test="appId != null">app_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="sensorType != null">#{sensorType},</if>
+            <if test="recvData != null">#{recvData},</if>
+            <if test="recvAfterdata != null">#{recvAfterdata},</if>
+            <if test="recvTime != null">#{recvTime},</if>
+            <if test="appId != null">#{appId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLoraData" parameterType="LoraData">
+        update lora_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="recvData != null">recv_data = #{recvData},</if>
+            <if test="recvAfterdata != null">recv_afterdata = #{recvAfterdata},</if>
+            <if test="recvTime != null">recv_time = #{recvTime},</if>
+            <if test="appId != null">app_id = #{appId},</if>
+        </trim>
+        where data_id = #{dataId}
+    </update>
+
+    <delete id="deleteLoraDataByDataId" parameterType="Long">
+        delete from lora_data where data_id = #{dataId}
+    </delete>
+
+    <delete id="deleteLoraDataByDataIds" parameterType="String">
+        delete from lora_data where data_id in 
+        <foreach item="dataId" collection="array" open="(" separator="," close=")">
+            #{dataId}
+        </foreach>
+    </delete>
+</mapper>

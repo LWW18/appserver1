@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.api.mapper.WarningMsgAskedFromAppMapper">
+
+    <resultMap type="LoraTerminal" id="LoraTerminalResult">
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="terminalType"    column="terminal_type"    />
+        <result property="terminalEui"    column="terminal_eui"    />
+        <result property="terminalAddr"    column="terminal_addr"    />
+        <result property="nwkskey"    column="nwkskey"    />
+        <result property="appskey"    column="appskey"    />
+        <result property="appkey"    column="appkey"    />
+        <result property="appEui"    column="app_eui"    />
+        <result property="runState"    column="run_state"    />
+        <result property="activeState"    column="active_state"    />
+        <result property="battery"    column="battery"    />
+        <result property="macType"    column="mac_type"    />
+        <result property="fCnt"    column="f_cnt"    />
+        <result property="lastMsgDt"    column="last_msg_dt"    />
+        <result property="appId"    column="app_id"    />
+    </resultMap>
+
+    <sql id="selectLoraTerminalVo">
+        select terminal_id, terminal_type, terminal_eui, terminal_addr, nwkskey, appskey, appkey, app_eui, run_state, active_state, battery, mac_type, f_cnt, last_msg_dt, app_id from lora_terminal
+    </sql>
+
+    <select id="selectLoraTerminalList" parameterType="LoraTerminal" resultMap="LoraTerminalResult">
+        <include refid="selectLoraTerminalVo"/>
+        <where>
+            <if test="terminalType != null "> and terminal_type = #{terminalType}</if>
+            <if test="terminalEui != null  and terminalEui != ''"> and terminal_eui = #{terminalEui}</if>
+            <if test="terminalAddr != null "> and terminal_addr = #{terminalAddr}</if>
+            <if test="nwkskey != null  and nwkskey != ''"> and nwkskey = #{nwkskey}</if>
+            <if test="appskey != null  and appskey != ''"> and appskey = #{appskey}</if>
+            <if test="appkey != null  and appkey != ''"> and appkey = #{appkey}</if>
+            <if test="appEui != null  and appEui != ''"> and app_eui = #{appEui}</if>
+            <if test="runState != null "> and run_state = #{runState}</if>
+            <if test="activeState != null "> and active_state = #{activeState}</if>
+            <if test="battery != null "> and battery = #{battery}</if>
+            <if test="macType != null "> and mac_type = #{macType}</if>
+            <if test="fCnt != null "> and f_cnt = #{fCnt}</if>
+            <if test="lastMsgDt != null "> and last_msg_dt = #{lastMsgDt}</if>
+            <if test="appId != null "> and app_id = #{appId}</if>
+        </where>
+    </select>
+
+    <select id="selectLoraTerminalByTerminalId" parameterType="Long" resultMap="LoraTerminalResult">
+        <include refid="selectLoraTerminalVo"/>
+        where terminal_id = #{terminalId}
+    </select>
+
+    <insert id="insertLoraTerminal" parameterType="LoraTerminal" useGeneratedKeys="true" keyProperty="terminalId">
+        insert into lora_terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="terminalType != null">terminal_type,</if>
+            <if test="terminalEui != null">terminal_eui,</if>
+            <if test="terminalAddr != null">terminal_addr,</if>
+            <if test="nwkskey != null">nwkskey,</if>
+            <if test="appskey != null">appskey,</if>
+            <if test="appkey != null">appkey,</if>
+            <if test="appEui != null">app_eui,</if>
+            <if test="runState != null">run_state,</if>
+            <if test="activeState != null">active_state,</if>
+            <if test="battery != null">battery,</if>
+            <if test="macType != null">mac_type,</if>
+            <if test="fCnt != null">f_cnt,</if>
+            <if test="lastMsgDt != null">last_msg_dt,</if>
+            <if test="appId != null">app_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="terminalType != null">#{terminalType},</if>
+            <if test="terminalEui != null">#{terminalEui},</if>
+            <if test="terminalAddr != null">#{terminalAddr},</if>
+            <if test="nwkskey != null">#{nwkskey},</if>
+            <if test="appskey != null">#{appskey},</if>
+            <if test="appkey != null">#{appkey},</if>
+            <if test="appEui != null">#{appEui},</if>
+            <if test="runState != null">#{runState},</if>
+            <if test="activeState != null">#{activeState},</if>
+            <if test="battery != null">#{battery},</if>
+            <if test="macType != null">#{macType},</if>
+            <if test="fCnt != null">#{fCnt},</if>
+            <if test="lastMsgDt != null">#{lastMsgDt},</if>
+            <if test="appId != null">#{appId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoraTerminal" parameterType="LoraTerminal">
+        update lora_terminal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="terminalType != null">terminal_type = #{terminalType},</if>
+            <if test="terminalEui != null">terminal_eui = #{terminalEui},</if>
+            <if test="terminalAddr != null">terminal_addr = #{terminalAddr},</if>
+            <if test="nwkskey != null">nwkskey = #{nwkskey},</if>
+            <if test="appskey != null">appskey = #{appskey},</if>
+            <if test="appkey != null">appkey = #{appkey},</if>
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="runState != null">run_state = #{runState},</if>
+            <if test="activeState != null">active_state = #{activeState},</if>
+            <if test="battery != null">battery = #{battery},</if>
+            <if test="macType != null">mac_type = #{macType},</if>
+            <if test="fCnt != null">f_cnt = #{fCnt},</if>
+            <if test="lastMsgDt != null">last_msg_dt = #{lastMsgDt},</if>
+            <if test="appId != null">app_id = #{appId},</if>
+        </trim>
+        where terminal_id = #{terminalId}
+    </update>
+
+    <delete id="deleteLoraTerminalByTerminalId" parameterType="Long">
+        delete from lora_terminal where terminal_id = #{terminalId}
+    </delete>
+
+    <delete id="deleteLoraTerminalByTerminalIds" parameterType="String">
+        delete from lora_terminal where terminal_id in
+        <foreach item="terminalId" collection="array" open="(" separator="," close=")">
+            #{terminalId}
+        </foreach>
+    </delete>
+</mapper>

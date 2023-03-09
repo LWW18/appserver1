@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LoginReturnMapper">
+
+    <resultMap type="LoginReturn" id="LoginReturnResult">
+        <result property="returnId"    column="return_id"    />
+        <result property="workId"    column="work_id"    />
+        <result property="sn"    column="sn"    />
+        <result property="businessCycle"    column="business_cycle"    />
+        <result property="tdmaCycle"    column="tdma_cycle"    />
+        <result property="timeSlotWidth"    column="time_slot_width"    />
+        <result property="threshold"    column="threshold"    />
+        <result property="timeWindow"    column="time_window"    />
+        <result property="terminalEui"    column="terminal_eui"    />
+        <result property="frame"    column="frame"    />
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="sensorType"    column="sensor_type"    />
+        <result property="appEui"    column="app_eui"    />
+        <result property="runState"    column="run_state"    />
+        <result property="appType"    column="app_type"    />
+        <result property="payload"    column="payload"    />
+        <result property="length"    column="length"    />
+        <result property="virtualSubnet"    column="virtual_subnet"    />
+    </resultMap>
+
+    <sql id="selectLoginReturnVo">
+        select return_id, work_id, sn, business_cycle, tdma_cycle, time_slot_width, threshold, time_window, terminal_eui, frame, sensor_id, sensor_type, app_eui, run_state, app_type, payload, length, virtual_subnet from login_return
+    </sql>
+
+    <select id="selectLoginReturnList" parameterType="LoginReturn" resultMap="LoginReturnResult">
+        <include refid="selectLoginReturnVo"/>
+        <where>
+            <if test="workId != null  and workId != ''"> and work_id = #{workId}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="businessCycle != null "> and business_cycle = #{businessCycle}</if>
+            <if test="tdmaCycle != null "> and tdma_cycle = #{tdmaCycle}</if>
+            <if test="timeSlotWidth != null "> and time_slot_width = #{timeSlotWidth}</if>
+            <if test="threshold != null  and threshold != ''"> and threshold = #{threshold}</if>
+            <if test="timeWindow != null "> and time_window = #{timeWindow}</if>
+            <if test="terminalEui != null  and terminalEui != ''"> and terminal_eui = #{terminalEui}</if>
+            <if test="frame != null  and frame != ''"> and frame = #{frame}</if>
+            <if test="sensorId != null "> and sensor_id = #{sensorId}</if>
+            <if test="sensorType != null "> and sensor_type = #{sensorType}</if>
+            <if test="appEui != null  and appEui != ''"> and app_eui = #{appEui}</if>
+            <if test="runState != null  and runState != ''"> and run_state = #{runState}</if>
+            <if test="appType != null "> and app_type = #{appType}</if>
+            <if test="payload != null  and payload != ''"> and payload = #{payload}</if>
+            <if test="length != null "> and length = #{length}</if>
+            <if test="virtualSubnet != null "> and virtual_subnet = #{virtualSubnet}</if>
+        </where>
+    </select>
+
+    <select id="selectLoginReturnByReturnId" parameterType="Long" resultMap="LoginReturnResult">
+        <include refid="selectLoginReturnVo"/>
+        where return_id = #{returnId}
+    </select>
+
+    <select id="selectLoginReturnBySn" parameterType="String" resultMap="LoginReturnResult">
+        <include refid="selectLoginReturnVo"/>
+        where sn = #{sn}
+    </select>
+
+    <select id="selectLoginReturnByEuiId" parameterType="LoginReturn" resultMap="LoginReturnResult">
+        <include refid="selectLoginReturnVo"/>
+        where work_id = #{workId} and terminal_eui = #{terminalEui}
+    </select>
+
+    <select id="selectLoginReturnByTerminalEui" parameterType="String" resultMap="LoginReturnResult">
+        <include refid="selectLoginReturnVo"/>
+        where  terminal_eui = #{terminalEui} and run_state = '1'
+    </select>
+
+
+    <insert id="insertLoginReturn" parameterType="LoginReturn">
+        insert into login_return
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="returnId != null">return_id,</if>
+            <if test="workId != null">work_id,</if>
+            <if test="businessCycle != null">business_cycle,</if>
+            <if test="tdmaCycle != null">tdma_cycle,</if>
+            <if test="timeSlotWidth != null">time_slot_width,</if>
+            <if test="threshold != null">threshold,</if>
+            <if test="timeWindow != null">time_window,</if>
+            <if test="sn != null">sn,</if>
+            <if test="terminalEui != null">terminal_eui,</if>
+            <if test="frame != null">frame,</if>
+            <if test="sensorId != null">sensor_id,</if>
+            <if test="sensorType != null">sensor_type,</if>
+            <if test="appEui != null">app_eui,</if>
+            <if test="runState != null">run_state,</if>
+            <if test="appType != null">app_type,</if>
+            <if test="payload != null">payload,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="returnId != null">#{returnId},</if>
+            <if test="workId != null">#{workId},</if>
+            <if test="businessCycle != null">#{businessCycle},</if>
+            <if test="tdmaCycle != null">#{tdmaCycle},</if>
+            <if test="timeSlotWidth != null">#{timeSlotWidth},</if>
+            <if test="threshold != null">#{threshold},</if>
+            <if test="timeWindow != null">#{timeWindow},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="terminalEui != null">#{terminalEui},</if>
+            <if test="frame != null">#{frame},</if>
+            <if test="sensorId != null">#{sensorId},</if>
+            <if test="sensorType != null">#{sensorType},</if>
+            <if test="appEui != null">#{appEui},</if>
+            <if test="runState != null">#{runState},</if>
+            <if test="appType != null">#{appType},</if>
+            <if test="payload != null">#{payload},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoginReturn" parameterType="LoginReturn">
+        update login_return
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workId != null">work_id = #{workId},</if>
+            <if test="businessCycle != null">business_cycle = #{businessCycle},</if>
+            <if test="tdmaCycle != null">tdma_cycle = #{tdmaCycle},</if>
+            <if test="timeSlotWidth != null">time_slot_width = #{timeSlotWidth},</if>
+            <if test="threshold != null">threshold = #{threshold},</if>
+            <if test="timeWindow != null">time_window = #{timeWindow},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="terminalEui != null">terminal_eui = #{terminalEui},</if>
+            <if test="frame != null">frame = #{frame},</if>
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="runState != null">run_state = #{runState},</if>
+            <if test="appType != null">app_type = #{appType},</if>
+            <if test="payload != null">payload = #{payload},</if>
+        </trim>
+        where return_id = #{returnId}
+    </update>
+
+
+    <update id="updateCycleBySn" parameterType="LoginReturn">
+        update login_return
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="businessCycle != null">business_cycle = #{businessCycle},</if>
+        </trim>
+        where sn = #{sn}
+    </update>
+
+    <update id="updateThresholdBySn" parameterType="LoginReturn">
+        update login_return
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workId != null">work_id = #{workId},</if>
+            <if test="businessCycle != null">business_cycle = #{businessCycle},</if>
+            <if test="tdmaCycle != null">tdma_cycle = #{tdmaCycle},</if>
+            <if test="timeSlotWidth != null">time_slot_width = #{timeSlotWidth},</if>
+            <if test="threshold != null">threshold = #{threshold},</if>
+            <if test="timeWindow != null">time_window = #{timeWindow},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="terminalEui != null">terminal_eui = #{terminalEui},</if>
+            <if test="frame != null">frame = #{frame},</if>
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="runState != null">run_state = #{runState},</if>
+            <if test="appType != null">app_type = #{appType},</if>
+            <if test="payload != null">payload = #{payload},</if>
+            <if test="virtualSubnet != null">virtual_Subnet = #{virtualSubnet},</if>
+        </trim>
+        where sn = #{sn}
+    </update>
+
+    <update id="updatePayloadBySn" parameterType="LoginReturn">
+        update login_return
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workId != null">work_id = #{workId},</if>
+            <if test="businessCycle != null">business_cycle = #{businessCycle},</if>
+            <if test="tdmaCycle != null">tdma_cycle = #{tdmaCycle},</if>
+            <if test="timeSlotWidth != null">time_slot_width = #{timeSlotWidth},</if>
+            <if test="threshold != null">threshold = #{threshold},</if>
+            <if test="timeWindow != null">time_window = #{timeWindow},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="terminalEui != null">terminal_eui = #{terminalEui},</if>
+            <if test="frame != null">frame = #{frame},</if>
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="runState != null">run_state = #{runState},</if>
+            <if test="appType != null">app_type = #{appType},</if>
+            <if test="payload != null">payload = #{payload},</if>
+            <if test="virtualSubnet != null">virtual_ubnet = #{virtualSubnet},</if>
+        </trim>
+
+        where sn = #{sn}
+    </update>
+
+    <update id="updatePayload" parameterType="LoginReturn">
+        update login_return
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workId != null">work_id = #{workId},</if>
+            <if test="businessCycle != null">business_cycle = #{businessCycle},</if>
+            <if test="tdmaCycle != null">tdma_cycle = #{tdmaCycle},</if>
+            <if test="timeSlotWidth != null">time_slot_width = #{timeSlotWidth},</if>
+            <if test="threshold != null">threshold = #{threshold},</if>
+            <if test="timeWindow != null">time_window = #{timeWindow},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="terminalEui != null">terminal_eui = #{terminalEui},</if>
+            <if test="frame != null">frame = #{frame},</if>
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="runState != null">run_state = #{runState},</if>
+            <if test="appType != null">app_type = #{appType},</if>
+            <if test="payload != null">payload = #{payload},</if>
+        </trim>
+        where terminal_eui = #{terminalEui}
+    </update>
+
+    <update id="updateLoginReturnBySn" parameterType="LoginReturn">
+        update login_return
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workId != null">work_id = #{workId},</if>
+            <if test="businessCycle != null">business_cycle = #{businessCycle},</if>
+            <if test="tdmaCycle != null">tdma_cycle = #{tdmaCycle},</if>
+            <if test="timeSlotWidth != null">time_slot_width = #{timeSlotWidth},</if>
+            <if test="threshold != null">threshold = #{threshold},</if>
+            <if test="timeWindow != null">time_window = #{timeWindow},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="terminalEui != null">terminal_eui = #{terminalEui},</if>
+            <if test="frame != null">frame = #{frame},</if>
+            <if test="sensorId != null">sensor_id = #{sensorId},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="runState != null">run_state = #{runState},</if>
+            <if test="appType != null">app_type = #{appType},</if>
+            <if test="payload != null">payload = #{payload},</if>
+        </trim>
+        where sn = #{sn}
+    </update>
+
+    <delete id="deleteLoginReturnByReturnId" parameterType="Long">
+        delete from login_return where return_id = #{returnId}
+    </delete>
+
+    <delete id="deleteLoginReturnByReturnIds" parameterType="String">
+        delete from login_return where return_id in
+        <foreach item="returnId" collection="array" open="(" separator="," close=")">
+            #{returnId}
+        </foreach>
+    </delete>
+
+
+    <update id="loginApp" parameterType="String">
+        update login_return set run_state = '1' , virtual_subnet = '0'
+        where
+            sn = #{sn}
+    </update>
+
+    <update id="logoutTerminalByEui" parameterType="String">
+        update login_return set run_state = '0'
+        where
+            terminal_eui = #{terminalEui}
+    </update>
+
+
+
+</mapper>

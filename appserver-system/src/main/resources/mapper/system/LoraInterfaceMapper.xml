@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LoraInterfaceMapper">
+    
+    <resultMap type="LoraInterface" id="LoraInterfaceResult">
+        <result property="id"    column="id"    />
+        <result property="transmitPower"    column="transmit_power"    />
+        <result property="bandwidth"    column="bandwidth"    />
+        <result property="spreadingFactor"    column="spreading_factor"    />
+        <result property="loraId"    column="lora_id"    />
+        <result property="band"    column="band"    />
+        <result property="frequency"    column="frequency"    />
+        <result property="gwEui"    column="gw_eui"    />
+    </resultMap>
+
+    <sql id="selectLoraInterfaceVo">
+        select id, transmit_power, bandwidth, spreading_factor, lora_id, band, frequency, gw_eui from lora_interface
+    </sql>
+
+    <select id="selectLoraInterfaceList" parameterType="LoraInterface" resultMap="LoraInterfaceResult">
+        <include refid="selectLoraInterfaceVo"/>
+        <where>  
+            <if test="transmitPower != null "> and transmit_power = #{transmitPower}</if>
+            <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+            <if test="spreadingFactor != null "> and spreading_factor = #{spreadingFactor}</if>
+            <if test="loraId != null "> and lora_id = #{loraId}</if>
+            <if test="frequency != null "> and frequency = #{frequency}</if>
+            <if test="gwEui != null  and gwEui != ''"> and gw_eui = #{gwEui}</if>
+        </where>
+    </select>
+    
+    <select id="selectLoraInterfaceById" parameterType="Long" resultMap="LoraInterfaceResult">
+        <include refid="selectLoraInterfaceVo"/>
+        where gw_eui = #{gwEui}
+    </select>
+
+    <select id="selectLoraInterfaceByGwEui" parameterType="String" resultMap="LoraInterfaceResult">
+        <include refid="selectLoraInterfaceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertLoraInterface" parameterType="LoraInterface">
+        insert into lora_interface
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="transmitPower != null">transmit_power,</if>
+            <if test="bandwidth != null">bandwidth,</if>
+            <if test="spreadingFactor != null">spreading_factor,</if>
+            <if test="loraId != null">lora_id,</if>
+            <if test="band != null">band,</if>
+            <if test="frequency != null">frequency,</if>
+            <if test="gwEui != null">gw_eui,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="transmitPower != null">#{transmitPower},</if>
+            <if test="bandwidth != null">#{bandwidth},</if>
+            <if test="spreadingFactor != null">#{spreadingFactor},</if>
+            <if test="loraId != null">#{loraId},</if>
+            <if test="band != null">#{band},</if>
+            <if test="frequency != null">#{frequency},</if>
+            <if test="gwEui != null">#{gwEui},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLoraInterface" parameterType="LoraInterface">
+        update lora_interface
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="transmitPower != null">transmit_power = #{transmitPower},</if>
+            <if test="bandwidth != null">bandwidth = #{bandwidth},</if>
+            <if test="spreadingFactor != null">spreading_factor = #{spreadingFactor},</if>
+            <if test="loraId != null">lora_id = #{loraId},</if>
+            <if test="band != null">band = #{band},</if>
+            <if test="frequency != null">frequency = #{frequency},</if>
+            <if test="gwEui != null">gw_eui = #{gwEui},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLoraInterfaceById" parameterType="Long">
+        delete from lora_interface where id = #{id}
+    </delete>
+
+    <delete id="deleteLoraInterfaceByIds" parameterType="String">
+        delete from lora_interface where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

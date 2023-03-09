@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LoraDataMapper">
+
+    <resultMap type="LoraData" id="LoraDataResult">
+        <result property="dataId"    column="data_id"    />
+        <result property="terminalEui"    column="terminal_eui"    />
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="sn"    column="sn"    />
+        <result property="gwEui"    column="gateway_eui"    />
+        <result property="appEui"    column="app_eui"    />
+        <result property="sensorType"    column="sensor_type"    />
+        <result property="recvData"    column="recv_data"    />
+        <result property="recvAfterdata"    column="recv_afterdata"    />
+        <result property="recvTime"    column="recv_time"    />
+        <result property="msgLength"    column="msg_length"    />
+        <result property="readFlag"    column="read_flag"    />
+        <result property="msgVersion"    column="msg_version"    />
+        <result property="warningFlag"    column="warning_flag"    />
+        <result property="appType"    column="app_type"    />
+        <result property="appName"    column="app_name"    />
+    </resultMap>
+
+    <sql id="selectLoraDataVo">
+        select data_id, terminal_eui, sensor_id, sn, gateway_eui, app_eui, sensor_type,
+               recv_data, recv_afterdata, recv_time, msg_length, read_flag, msg_version,
+               warning_flag, app_type, app_name
+        from lora_data
+    </sql>
+
+    <select id="selectLoraDataList" parameterType="LoraData" resultMap="LoraDataResult">
+        <include refid="selectLoraDataVo"/>
+        <where>
+            <if test="terminalEui != null  and terminalEui != ''"> and terminal_eui = #{terminalEui}</if>
+            <if test="sensorId != null "> and sensor_id = #{sensorId}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="gwEui != null  and gwEui != ''"> and gateway_eui = #{gwEui}</if>
+            <if test="appEui != null  and appEui != ''"> and app_eui = #{appEui}</if>
+            <if test="sensorType != null and appEui != ''"> and sensor_type = #{sensorType}</if>
+            <if test="recvData != null  and recvData != ''"> and recv_data = #{recvData}</if>
+            <if test="recvAfterdata != null  and recvAfterdata != ''"> and recv_afterdata = #{recvAfterdata}</if>
+            <if test="recvTime != null "> and recv_time = #{recvTime}</if>
+            <if test="msgLength != null "> and msg_length = #{msgLength}</if>
+            <if test="readFlag != null  and readFlag != ''"> and read_flag = #{readFlag}</if>
+            <if test="msgVersion != null "> and msg_version = #{msgVersion}</if>
+            <if test="warningFlag != null "> and warning_flag = #{warningFlag}</if>
+            <if test="appType != null "> and app_type = #{appType}</if>
+            <if test="appName != null  and appName != ''"> and app_name like concat('%', #{appName}, '%')</if>
+        </where>
+    </select>
+
+
+    <select id="selectWarningMsgList" parameterType="LoraData" resultMap="LoraDataResult">
+        <include refid="selectLoraDataVo"/>
+        <where> sensor_type = 2 and  read_flag = 0
+            <if test="terminalEui != null "> and d.terminal_eui = #{terminalEui}</if>
+             limit 1
+        </where>
+    </select>
+
+
+    <select id="selectLoraDataByDataId" parameterType="Long" resultMap="LoraDataResult">
+        <include refid="selectLoraDataVo"/>
+        where d.data_id = #{dataId}
+    </select>
+
+    <insert id="insertLoraData" parameterType="LoraData" useGeneratedKeys="true" keyProperty="dataId">
+        insert into lora_data(
+        <if test="terminalEui != null">terminal_eui,</if>
+        <if test="appEui != null">app_eui,</if>
+        <if test="sensorType != null">sensor_type,</if>
+        <if test="recvData != null">recv_data,</if>
+        <if test="recvAfterdata != null">recv_afterdata,</if>
+        <if test="msgLength != null">msg_length,</if>
+        <if test="readFlag != null">read_flag,</if>
+        <if test="msgVersion != null">msg_version,</if>
+        <if test="warningFlag != null">warning_flag,</if>
+        <if test="gwEui != null">gateway_eui,</if>
+        <if test="sn != null">sn,</if>
+        <if test="sensorId != null">sensor_id,</if>
+        <if test="appName != null">app_name,</if>
+<!--        <if test="appId != null">app_id,</if>-->
+            recv_time
+        )values(
+        <if test="terminalEui != null">#{terminalEui},</if>
+        <if test="appEui != null">#{appEui},</if>
+        <if test="sensorType != null">#{sensorType},</if>
+        <if test="recvData != null">#{recvData},</if>
+        <if test="recvAfterdata != null">#{recvAfterdata},</if>
+        <if test="msgLength != null">#{msgLength},</if>
+        <if test="readFlag != null">#{readFlag},</if>
+        <if test="msgVersion != null">#{msgVersion},</if>
+        <if test="warningFlag != null">#{warningFlag},</if>
+        <if test="gwEui != null">#{gwEui},</if>
+        <if test="sn != null">#{sn},</if>
+        <if test="sensorId != null">#{sensorId},</if>
+        <if test="appName != null">#{appName},</if>
+<!--        <if test="appId != null">#{appId},</if>-->
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateLoraData" parameterType="LoraData">
+        update lora_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="terminalEui != null">terminal_eui = #{terminalEui},</if>
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="gwEui != null">gateway_eui = #{gwEui},</if>
+            <if test="sensorType != null">sensor_type = #{sensorType},</if>
+            <if test="recvData != null">recv_data = #{recvData},</if>
+            <if test="recvAfterdata != null">recv_afterdata = #{recvAfterdata},</if>
+            <if test="recvTime != null">recv_time = #{recvTime},</if>
+            <if test="msgLength != null">msg_length = #{msgLength},</if>
+            <if test="msgVersion != null">msg_version = #{msgVersion},</if>
+            <if test="readFlag != null">read_flag = #{readFlag},</if>
+            <if test="warningFlag != null">warning_flag = #{warningFlag},</if>
+<!--            <if test="appId != null">app_id = #{appId},</if>-->
+        </trim>
+        where data_id = #{dataId}
+    </update>
+
+    <delete id="deleteLoraDataByDataId" parameterType="Long">
+        delete from lora_data where data_id = #{dataId}
+    </delete>
+
+    <delete id="readWarningMsg" parameterType="String">
+        update lora_data set read_flag = '2' where terminal_eui = #{terminalEui}
+    </delete>
+
+    <delete id="deleteLoraDataByDataIds" parameterType="String">
+        delete from lora_data where data_id in
+        <foreach item="dataId" collection="array" open="(" separator="," close=")">
+            #{dataId}
+        </foreach>
+    </delete>
+
+    <select id="checkTerminalHava" parameterType="String" resultType="int">
+        select count(1) from lora_terminal where terminal_eui = #{terminalEui}
+    </select>
+
+    <select id="checkTerminalLogout" parameterType="String" resultType="int">
+        select count(1) from lora_terminal where terminal_eui = #{terminalEui} and del_flag = '0'
+    </select>
+
+    <update id="updateRecvTime" parameterType="Long">
+        update lora_data set recv_time = now() where data_id = #{dataId}
+    </update>
+
+
+    <select id="viewNum" parameterType="String" resultMap="LoraDataResult">
+         select * from lora_data WHERE recv_time between #{data2} and #{data1}
+    </select>
+
+    <update id="updateAppNameByEui" parameterType="LoraData">
+        update lora_data set app_name = #{appName} where app_eui = #{appEui}
+    </update>
+
+</mapper>

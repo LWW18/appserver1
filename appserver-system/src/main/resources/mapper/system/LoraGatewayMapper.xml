@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LoraGatewayMapper">
+
+    <resultMap type="LoraGateway" id="LoraGatewayResult">
+        <result property="gatewayId"    column="gateway_id"    />
+        <result property="gwEui"    column="gw_eui"    />
+        <result property="name"    column="name"    />
+        <result property="fwVersion"    column="fw_version"    />
+        <result property="runState"    column="run_state"    />
+        <result property="createDt"    column="create_dt"    />
+        <result property="regDt"    column="reg_dt"    />
+        <result property="lastConnDt"    column="last_conn_dt"    />
+        <result property="lastMsgDt"    column="last_msg_dt"    />
+        <result property="battery"    column="battery"    />
+        <result property="powerType"    column="power_type"    />
+        <result property="gps"    column="gps"    />
+        <result property="loraCount"    column="lora_count"    />
+    </resultMap>
+
+    <sql id="selectLoraGatewayVo">
+        select gateway_id, gw_eui, name, fw_version, run_state, create_dt, reg_dt, last_conn_dt, last_msg_dt, battery, power_type, gps, lora_count from lora_gateway
+    </sql>
+
+    <select id="selectLoraGatewayList" parameterType="LoraGateway" resultMap="LoraGatewayResult">
+        <include refid="selectLoraGatewayVo"/>
+        <where>
+            <if test="gwEui != null  and gwEui != ''"> and gw_eui like concat('%', #{gwEui} ,'%')</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="fwVersion != null  and fwVersion != ''"> and fw_version = #{fwVersion}</if>
+            <if test="runState != null "> and run_state = #{runState}</if>
+            <if test="createDt != null "> and create_dt = #{createDt}</if>
+            <if test="regDt != null "> and reg_dt = #{regDt}</if>
+            <if test="lastConnDt != null "> and last_conn_dt = #{lastConnDt}</if>
+            <if test="lastMsgDt != null "> and last_msg_dt = #{lastMsgDt}</if>
+            <if test="battery != null "> and battery = #{battery}</if>
+            <if test="powerType != null "> and power_type = #{powerType}</if>
+            <if test="gps != null  and gps != ''"> and gps = #{gps}</if>
+            <if test="loraCount != null "> and lora_count = #{loraCount}</if>
+        </where>
+    </select>
+
+    <select id="selectLoraGatewayByGatewayId" parameterType="Long" resultMap="LoraGatewayResult">
+        select * from lora_gateway where gateway_id = #{gatewayId}
+    </select>
+
+    <select id="checkGatewayHaveByEui" parameterType="String" resultMap="LoraGatewayResult">
+        <include refid="selectLoraGatewayVo"/>
+        where gateway_eui = #{gatewayEui}
+    </select>
+
+    <insert id="insertLoraGateway" parameterType="LoraGateway" useGeneratedKeys="true" keyProperty="gatewayId">
+        insert into lora_gateway
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gwEui != null">gw_eui,</if>
+            <if test="name != null">name,</if>
+            <if test="fwVersion != null">fw_version,</if>
+            <if test="runState != null">run_state,</if>
+            <if test="createDt != null">create_dt,</if>
+            <if test="regDt != null">reg_dt,</if>
+            <if test="lastConnDt != null">last_conn_dt,</if>
+            <if test="lastMsgDt != null">last_msg_dt,</if>
+            <if test="battery != null">battery,</if>
+            <if test="powerType != null">power_type,</if>
+            <if test="gps != null">gps,</if>
+            <if test="loraCount != null">lora_count,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="gwEui != null">#{gwEui},</if>
+            <if test="name != null">#{name},</if>
+            <if test="fwVersion != null">#{fwVersion},</if>
+            <if test="runState != null">#{runState},</if>
+            <if test="createDt != null">#{createDt},</if>
+            <if test="regDt != null">#{regDt},</if>
+            <if test="lastConnDt != null">#{lastConnDt},</if>
+            <if test="lastMsgDt != null">#{lastMsgDt},</if>
+            <if test="battery != null">#{battery},</if>
+            <if test="powerType != null">#{powerType},</if>
+            <if test="gps != null">#{gps},</if>
+            <if test="loraCount != null">#{loraCount},</if>
+        </trim>
+    </insert>
+
+    <update id="updateLoraGateway" parameterType="LoraGateway">
+        update lora_gateway
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="gwEui != null">gw_eui = #{gwEui},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="fwVersion != null">fw_version = #{fwVersion},</if>
+            <if test="runState != null">run_state = #{runState},</if>
+            <if test="createDt != null">create_dt = #{createDt},</if>
+            <if test="regDt != null">reg_dt = #{regDt},</if>
+            <if test="lastConnDt != null">last_conn_dt = #{lastConnDt},</if>
+            <if test="lastMsgDt != null">last_msg_dt = #{lastMsgDt},</if>
+            <if test="battery != null">battery = #{battery},</if>
+            <if test="powerType != null">power_type = #{powerType},</if>
+            <if test="gps != null">gps = #{gps},</if>
+            <if test="loraCount != null">lora_count = #{loraCount},</if>
+        </trim>
+        where gateway_id = #{gatewayId}
+    </update>
+
+    <delete id="deleteLoraGatewayByGatewayId" parameterType="Long">
+        delete from lora_gateway where gateway_id = #{gatewayId}
+    </delete>
+
+    <delete id="deleteLoraGatewayByGatewayIds" parameterType="String">
+        delete from lora_gateway where gateway_id in
+        <foreach item="gatewayId" collection="array" open="(" separator="," close=")">
+            #{gatewayId}
+        </foreach>
+    </delete>
+
+    <update id="updateLastMsgTime" parameterType="String">
+        update lora_gateway set last_msg_dt = now() where gw_eui = #{gatewayEui}
+    </update>
+</mapper>

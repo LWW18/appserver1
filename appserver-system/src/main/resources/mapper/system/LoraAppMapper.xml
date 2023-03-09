@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LoraAppMapper">
+
+    <resultMap type="LoraApp" id="LoraAppResult">
+        <result property="appId"    column="app_id"    />
+        <result property="appEui"    column="app_eui"    />
+        <result property="appSecret"    column="app_secret"    />
+        <result property="appName"    column="app_name"    />
+        <result property="descript"    column="descript"    />
+        <result property="terminals"    column="terminals"    />
+        <result property="managerName"    column="manager_name"    />
+        <result property="phone"    column="phone"    />
+        <result property="timeto"    column="timeto"    />
+        <result property="authState"    column="auth_state"    />
+        <result property="version"    column="version"    />
+        <result property="company"    column="company"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="authStarttime"    column="auth_starttime"    />
+    </resultMap>
+
+    <sql id="selectLoraAppVo">
+        select app_id, app_eui, app_secret, app_name, descript, terminals, manager_name, phone, timeto, auth_state, version, company, create_time, auth_starttime from lora_app
+    </sql>
+
+
+
+
+    <select id="selectLoraAppList" parameterType="LoraApp" resultMap="LoraAppResult">
+        <include refid="selectLoraAppVo"/>
+        <where>
+            <if test="appEui != null  and appEui != ''"> and app_eui  like concat('%', #{appEui}, '%')</if>
+            <if test="appSecret != null  and appSecret != ''"> and app_secret = #{appSecret}</if>
+            <if test="appName != null  and appName != ''"> and app_name like concat('%', #{appName}, '%')</if>
+            <if test="descript != null  and descript != ''"> and descript = #{descript}</if>
+            <if test="terminals != null "> and terminals = #{terminals}</if>
+            <if test="managerName != null  and managerName != ''"> and manager_name like concat('%', #{managerName}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="timeto != null "> and timeto = #{timeto}</if>
+            <if test="authState != null  and authState != ''"> and auth_state = #{authState}</if>
+            <if test="version != null  and version != ''"> and version = #{version}</if>
+            <if test="company != null  and company != ''"> and company = #{company}</if>
+            <if test="authStarttime != null "> and auth_starttime = #{authStarttime}</if>
+        </where>
+    </select>
+
+    <select id="selectLoraAppListAll" parameterType="String" >
+        select app_eui from lora_app
+    </select>
+
+    <select id="selectLoraAppByAppId" parameterType="Long" resultMap="LoraAppResult">
+        <include refid="selectLoraAppVo"/>
+        where app_id = #{appId}
+    </select>
+
+    <select id="selectLoraAppByAppName" parameterType="String" resultMap="LoraAppResult">
+        <include refid="selectLoraAppVo"/>
+        where app_name = #{appName}
+    </select>
+
+    <select id="selectLoraAppByAppEui" parameterType="String" resultMap="LoraAppResult">
+        <include refid="selectLoraAppVo"/>
+        where app_eui = #{appEui}
+    </select>
+
+    <insert id="insertLoraApp" parameterType="LoraApp" useGeneratedKeys="true" keyProperty="appId">
+        insert into lora_app(
+            <if test="appEui != null">app_eui,</if>
+            <if test="appSecret != null">app_secret,</if>
+            <if test="appName != null">app_name,</if>
+            <if test="descript != null">descript,</if>
+            <if test="terminals != null">terminals,</if>
+            <if test="managerName != null">manager_name,</if>
+            <if test="phone != null">phone,</if>
+            <if test="timeto != null">timeto,</if>
+            <if test="authState != null">auth_state,</if>
+            <if test="version != null">version,</if>
+            <if test="company != null">company,</if>
+            <if test="authStarttime != null">auth_starttime,</if>
+            create_time
+        )values(
+            <if test="appEui != null">#{appEui},</if>
+            <if test="appSecret != null">#{appSecret},</if>
+            <if test="appName != null">#{appName},</if>
+            <if test="descript != null">#{descript},</if>
+            <if test="terminals != null">#{terminals},</if>
+            <if test="managerName != null">#{managerName},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="timeto != null">#{timeto},</if>
+            <if test="authState != null">#{authState},</if>
+            <if test="version != null">#{version},</if>
+            <if test="company != null">#{company},</if>
+            <if test="authStarttime != null">#{authStarttime},</if>
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateLoraApp" parameterType="LoraApp">
+        update lora_app
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appEui != null">app_eui = #{appEui},</if>
+            <if test="appSecret != null">app_secret = #{appSecret},</if>
+            <if test="appName != null">app_name = #{appName},</if>
+            <if test="descript != null">descript = #{descript},</if>
+            <if test="terminals != null">terminals = #{terminals},</if>
+            <if test="managerName != null">manager_name = #{managerName},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="timeto != null">timeto = #{timeto},</if>
+            <if test="authState != null">auth_state = #{authState},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="authStarttime != null">auth_starttime = #{authStarttime},</if>
+        </trim>
+        where app_id = #{appId}
+    </update>
+
+    <delete id="deleteLoraAppByAppId" parameterType="Long">
+        delete from lora_app where app_id = #{appId}
+    </delete>
+
+    <delete id="deleteLoraAppByAppIds" parameterType="String">
+        delete from lora_app where app_id in
+        <foreach item="appId" collection="array" open="(" separator="," close=")">
+            #{appId}
+        </foreach>
+    </delete>
+
+    <update id="updateAppStatus" parameterType="LoraApp">
+        update lora_app set auth_state = #{auth_state} where app_id = #{appId}
+    </update>
+
+    <select id="checkAppNameUnique" parameterType="String" resultMap="LoraAppResult">
+        select app_id, app_name from lora_app where app_name = #{appName} limit 1
+    </select>
+
+    <select id="checkAppEuiUnique" parameterType="String" resultMap="LoraAppResult">
+        select app_id, app_eui from lora_app where app_eui = #{appEui} limit 1
+    </select>
+
+    <select id="checkAppAuth" parameterType="String" resultMap="LoraAppResult">
+        select * from lora_app where app_eui = #{appEui}  AND auth_state=0
+    </select>
+
+    <select id="checkAppHavaByEui" parameterType="LoraApp" resultMap="LoraAppResult">
+        select * from lora_app where app_eui = #{appEui}
+    </select>
+
+</mapper>
+
